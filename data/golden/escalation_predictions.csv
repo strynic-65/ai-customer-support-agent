@@ -1,0 +1,21 @@
+customer_message,expected_escalation,predicted_escalation,correct,reasons
+My internet is slow today,AUTO_HANDLE,AUTO_HANDLE,True,
+My WiFi is not working,AUTO_HANDLE,AUTO_HANDLE,True,
+Why is my bill higher this month?,AUTO_HANDLE,AUTO_HANDLE,True,
+I want to change my internet plan,AUTO_HANDLE,AUTO_HANDLE,True,
+Is Xfinity available at my new address?,AUTO_HANDLE,AUTO_HANDLE,True,
+How can I reset my account password?,AUTO_HANDLE,AUTO_HANDLE,True,
+My payment failed,AUTO_HANDLE,AUTO_HANDLE,True,
+Can you help me troubleshoot my router?,AUTO_HANDLE,AUTO_HANDLE,True,
+I have no internet connection,AUTO_HANDLE,AUTO_HANDLE,True,
+How do I pay my bill?,AUTO_HANDLE,AUTO_HANDLE,True,
+Someone hacked my account,ESCALATE,ESCALATE,True,Possible security or privacy concern
+I see unauthorized access to my account,ESCALATE,ESCALATE,True,Possible security or privacy concern
+My identity has been stolen and I think my account is compromised,ESCALATE,ESCALATE,True,Possible security or privacy concern
+I think someone accessed my account without permission,ESCALATE,ESCALATE,True,Possible security or privacy concern
+I am furious with your service. I want to speak to a human,ESCALATE,ESCALATE,True,Customer appears highly frustrated | Customer requested a human agent
+This is ridiculous. Get me a real person now,ESCALATE,ESCALATE,True,Customer appears highly frustrated | Customer requested a human agent
+I want to talk to a customer service representative,ESCALATE,ESCALATE,True,Customer requested a human agent
+I am extremely frustrated and want to speak to someone,ESCALATE,ESCALATE,True,Customer appears highly frustrated | Customer requested a human agent
+I am taking legal action against Comcast,ESCALATE,ESCALATE,True,Customer appears highly frustrated
+Your service is terrible and I demand a human agent,ESCALATE,ESCALATE,True,Customer requested a human agent

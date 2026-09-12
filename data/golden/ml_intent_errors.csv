@@ -1,0 +1,107 @@
+review_id,customer_message,reviewed_intent,predicted_intent
+37,It’s quite possible that @116136 is the worst customer service I’ve ever experienced. It definitely is up there in the top five. Were it not for being limited by providers I would cancel the account today. #garbage,GENERAL_INQUIRY,SERVICE_AVAILABILITY
+45,@comcastcares Please call me. I pay $4k a year services and I cant map my accounts to each service address. I am not sitting on the phone with you anymore,ACCOUNT_ISSUE,CANCELLATION
+47,@comcastcares I don't see how you can help. The menu for season 5 has the season 4 finale listed instead of the first episode of season 5. How could it possibly be an issue with the account and not the service?,TECHNICAL_ISSUE,ACCOUNT_ISSUE
+56,"Um, @115900, I just received this text from you &amp; A: I don’t have an account and B: link doesn’t look legit. Didn’t see a way to report this on your website. #scamalert https://t.co/BsdDuXZWjh",ACCOUNT_ISSUE,TECHNICAL_ISSUE
+73,@116136 I pay for HBO. HBO isn't working cause you are updating my account. https://t.co/PYeV1sRDRW,TECHNICAL_ISSUE,ACCOUNT_ISSUE
+90,@comcastcares … how do you SIGN OUT of online mail? The Sign Out button is no longer working … it’s Sign In. I can’t find SIGN OUT anymore,ACCOUNT_ISSUE,INTERNET_OUTAGE
+93,@Comcastcares I need to cancel the online tv service that was added to my account. Can you hellp?,CANCELLATION,ACCOUNT_ISSUE
+99,"@comcastcares Yes, thank you. Yet those networks require me to log in with Comcast/Xfinity or I can't watch via their app.  Contracts or not, I don't get why the ageeement is not reciprocal.",ACCOUNT_ISSUE,SERVICE_AVAILABILITY
+136,"@ComcastCares
+#mobile_Care
+I have current service at my residence and want to add internet to my apartment. Can I or is it new account?",ACCOUNT_ISSUE,CANCELLATION
+147,@comcastcares The phone number on the account?,ACCOUNT_ISSUE,CANCELLATION
+165,"@115900 is such a joke.  After major issues this week with an unauthorized change to my account, now HBO is gone and no one is available for me to speak to. @comcastcares",ACCOUNT_ISSUE,TECHNICAL_ISSUE
+185,@comcastcares I’ve sent you a dm my issue isn’t with my account... it’s the lack of service Comcast providers and the consisntant lying that seems to be thrown around through your company there are major issues with locations all over the states and I know too many people whom are being abused,SERVICE_AVAILABILITY,TECHNICAL_ISSUE
+198,"@116136 HQ, VP Customer Relations said  they cannot call me back - a customer- as I am overseas, but they do call Panama to check their overseas offshore accounts",ACCOUNT_ISSUE,TECHNICAL_ISSUE
+39,@comcastcares Does Comcast make it a habit to lie to customers regarding billing? The numbers don’t add up. https://t.co/n2zfvzBE6b,BILLING_ISSUE,TECHNICAL_ISSUE
+42,@comcastcares Fuck you im suing pussies and will slander you too everyone you charged me a late fee when I was never late fuck you die slow,BILLING_ISSUE,SLOW_INTERNET
+49,Hey @comcastcares the next time you want to send someone out to disconnect my service you should probably send a bill first 🤷🏾‍♀️,BILLING_ISSUE,CANCELLATION
+85,@VerizonSupport Well thanks. I’m almost there. If it’s not fixed this week I’ll be switching once I get a good price comparison. And to think I have been a @116136 customer for over 6 years. Well maybe @115722 has better customer service.,GENERAL_INQUIRY,INTERNET_OUTAGE
+88,@116136 my internet service has been bad all day... my bill too high for bad service. I got things to do. 😩,BILLING_ISSUE,INTERNET_OUTAGE
+97,How is it that @369177 can charge $192 for the same service @115900 charges $256?,BILLING_ISSUE,TECHNICAL_ISSUE
+101,@comcastcares You charge an arm and a leg for pretty much basic cable,BILLING_ISSUE,INTERNET_OUTAGE
+135,"@comcastcares So, we have a contract which locks in proces, but yet, you increase prices? $9 for local broadcast is OUTRAGEOUS!
+
+@136958",BILLING_ISSUE,INTERNET_OUTAGE
+145,@115900 if you charge a premium price for on-demand then that means we pay to watch those shows. You’re making your money from us. So explain to me why I can fast forward through the show but you force me to sit through commercials? #ondemandisnot #ondemandisBS,BILLING_ISSUE,SLOW_INTERNET
+153,@comcastcares I signed up for a complete package that doesn't let me change my package for 2 years and I feel like no one cares about the service,PLAN_CHANGE,TECHNICAL_ISSUE
+157,@comcastcares I’m sorry do you not read what I write I don’t want to hear the same clichés all the time I need action contact is Queenie woman she’s in charge of the southeast I believe,GENERAL_INQUIRY,TECHNICAL_ISSUE
+195,I asked @116136 to cancel the TV channels I don't even use &amp; they told me my bill would go up by about $20 from what I pay now #WTFever,PLAN_CHANGE,BILLING_ISSUE
+4,That moment you get off the phone with @115900 and your blood is boiling. No wonder people cancel their cable.,GENERAL_INQUIRY,TECHNICAL_ISSUE
+19,"@comcastcares 
+Unfortunately, You can't do much about that. I tried through the phone and service center. The results is canceling my accou.",CANCELLATION,BILLING_ISSUE
+41,Me: Fine. I won’t cancel. @comcastcares I’m sorry. We don’t service your address. 😂😂😂,SERVICE_AVAILABILITY,CANCELLATION
+76,"Help @comcastcares When we signed up for service we were told there were no early cancellation fees if we moved, now they're saying we owe $600.",CANCELLATION,INTERNET_OUTAGE
+96,"@115900 Why do people keep calling me after I cancelled my service? Third call in a week now. I moved and switched service, please stop calling.",CANCELLATION,TECHNICAL_ISSUE
+100,@comcastcares Someone better be reaching out to me or I am cancelling services. I have spent over 3 hours on the phone and have been repeatedly lied to,CANCELLATION,ACCOUNT_ISSUE
+132,"Hey @116136 @comcastcares can y'all come to Phoenix? I'd immediately cancel with my other providers, I miss you!",SERVICE_AVAILABILITY,TECHNICAL_ISSUE
+134,@comcastcares Trash. Cancelled.,CANCELLATION,TECHNICAL_ISSUE
+138,Hey @116136 are you guys fucking with my internet cuz i cancelled by cable? I've never had this many problems before this week,TECHNICAL_ISSUE,INTERNET_OUTAGE
+183,"@comcastcares Yup, absolutely. I'm still waiting on someone to get in touch about changing / canceling my service. Can you help?",CANCELLATION,BILLING_ISSUE
+8,More than just #facebookdown. What is going on with my internet connection? #comcast,INTERNET_OUTAGE,TECHNICAL_ISSUE
+70,Our Internet down AGAIN on Thanksgiving day!  This is the msg we get on TV. This problem  happened about 4 months ago/ got new modem. We go thru Comcast modems like babies go thru diapers/now we have to wait until Sun. We pay for internet phone/TV &amp; #Comcast #Xfinity STINK STINK https://t.co/dAyFqFeqPo,INTERNET_OUTAGE,TECHNICAL_ISSUE
+109,"This is BS @comcastcares : 2.2 Mbps download, 0.9 Mbps upload. Via #GoogleWifi",SLOW_INTERNET,INTERNET_OUTAGE
+10,@comcastcares Can't be fixed unless I pay EVEN MORE for shit service.,BILLING_ISSUE,INTERNET_OUTAGE
+11,@116136 always some problem with your apps yet you always want your customers to pay your ridic bills!  So annoying #corpgreed https://t.co/bVQ4HZ1q30,BILLING_ISSUE,TECHNICAL_ISSUE
+22,@115900 why do I get connection issues at least once a day through you guys? It’s terrible. Pay your employees to come and look and waste $,TECHNICAL_ISSUE,INTERNET_OUTAGE
+30,Fucking see you later @116136. The fact that I deal with speed issues on a weekly basis is why everyone fucking hates you. Paying for 100Mbps and getting 15. Got a new modem and restarted it yesterday. You're the worst https://t.co/s5eG6BAL6g,SLOW_INTERNET,TECHNICAL_ISSUE
+38,Tired of being let down from @116136 ..Funny how @116136 processed my payment on time though. https://t.co/OORwEX4Nc2,PAYMENT_ISSUE,SLOW_INTERNET
+46,"@ComcastCares
+#mobile_Care been trying to pay my bill online since yesterday. App and website are not working. I spoke to customer service via chat yesterday and Irene said it would be fixed. I don’t want to be charged a late fee for your website issues.",PAYMENT_ISSUE,BILLING_ISSUE
+59,@116136 @115900 @comcastcares  #tomkarinshak I pay my bill on the 1st of every month &amp; I am always past due because #Comcast wants 2 mths payment ahead - why do I need to pay 2 mths in advance? #ridiculous #ripoff #poorservice #,PAYMENT_ISSUE,TECHNICAL_ISSUE
+60,@115900 I had a late fee assessed that I need reversed. I enrolled in auto pay and Comcast didn’t see it my account.,PAYMENT_ISSUE,ACCOUNT_ISSUE
+66,"Thank you, @115900!  You started drafting money from my bank account, even though I don’t have an account with you any longer, and refuse to help. Now I have to wait 7-10 days for a new debit card to stop your fraudulent drafts.",PAYMENT_ISSUE,ACCOUNT_ISSUE
+159,I’m so over @115900 @116136 @112158! I have had faulty internet for 4 months now. You want me to pay my bill consistently but don’t want to give me constant service! 🙄👎🏾😡,TECHNICAL_ISSUE,BILLING_ISSUE
+161,"@ComcastCares
+#mobile_Care Still waiting for $5.00 credit to show on my account. And issues with account requirement for autopay. never told",PAYMENT_ISSUE,ACCOUNT_ISSUE
+173,Hey @116136 why won’t you let me setup automatic payment on your website? All I get is errors. It’s 2017.,PAYMENT_ISSUE,ACCOUNT_ISSUE
+177,I feel @116136 should add the #WWEApp like they did YouTube. Cause I can't keep missin ppv n I refuse to pay $70... https://t.co/r1s4RmBSai,SERVICE_AVAILABILITY,SLOW_INTERNET
+2,"@115900 upgrade to the new faster service... as our service doesn't even work. #xfinitysucks
+
+@ATT you guys up and running right now?",PLAN_CHANGE,TECHNICAL_ISSUE
+6,If @191352 moves to channels I don't get on @115900 I might cancel my cable. It's already stupid they don't have @191353 on my plan.  #UFC216,PLAN_CHANGE,CANCELLATION
+15,@126440 @comcastcares The techs don't know a damn thing about what plans are available. We had one out a few days ago who wasn't even aware you could pay for unlimited data. Comcast is such trash.,PLAN_CHANGE,TECHNICAL_ISSUE
+17,@comcastcares ARe there issues with Comcast email.  Ever since the upgrade it is running like garbage,TECHNICAL_ISSUE,SLOW_INTERNET
+21,Shoutout to @115900 for having some of the worst internet service and plan policies ever.,PLAN_CHANGE,TECHNICAL_ISSUE
+27,@comcastcares Xfi tells me I need to upgrade.  Directs me to link that says I have upgraded.  Still tells me I need upgrade.  How do I get past? https://t.co/8Y3I3khMKl,PLAN_CHANGE,BILLING_ISSUE
+80,"@116136 Why is the *upgrade* offer I received restricted to ""new residential customers only""?  Am I eligible or not?  Paradox much?",PLAN_CHANGE,TECHNICAL_ISSUE
+105,I've had @115900 1 since Sept16 but can't upgrade system because I have $700 in bought movies that will disappear.. that's theft @116136,PLAN_CHANGE,TECHNICAL_ISSUE
+111,About to explode...😡 @116136 or @115900 or whatever they are called now has the most terrible customer service on the face of the planet!,GENERAL_INQUIRY,TECHNICAL_ISSUE
+124,@116136 this is bullshit my plan is unlimited and you fucks are charging me extra money for going over my data what fucking data I'm suppose to have unlimited,BILLING_ISSUE,INTERNET_OUTAGE
+125,@comcastcares Happy to remind me to get a new modem but this (getting faster speeds) require me to change my plan i.e. pay more? https://t.co/gXvljcKlpt,PLAN_CHANGE,TECHNICAL_ISSUE
+146,"@116136 planned to do stuff with family thinking no way you could mess up a two hour time gap, now I know for future to plan for all day appointment",GENERAL_INQUIRY,BILLING_ISSUE
+156,"@ComcastCares
+#mobile_Care upgraded to 150mb from 25mb on Saturday and still only getting 25mb!",SLOW_INTERNET,INTERNET_OUTAGE
+175,@comcastcares with the amount of issues I’ve had with your company/ internet I basically deserve a free internet upgrade for life,PLAN_CHANGE,SLOW_INTERNET
+186,"@comcastcares Thx for reaching out, but your on planet Zerta if you think I'm sending you personal information.",ACCOUNT_ISSUE,TECHNICAL_ISSUE
+189,"I am on the phone with  @comcastcares right now. Mind you i pay for 150mbps and my @55 came back at 92mbps. I swear the rep just told me that for those who are on that plan it is good when they get 92 download speed. hmmm
+
+#cantmakethisup #forreal #confused",SLOW_INTERNET,ACCOUNT_ISSUE
+51,@116136 worst service ever. Constantly goes out. If there was another service available in my area I would definitely no longer be a customer. Makes it really hard to stay on schedule with my online classes. I'm so frustrated,INTERNET_OUTAGE,SERVICE_AVAILABILITY
+54,"@ComcastCares
+#mobile_CareXI is there a problem with service in my area 48066?",INTERNET_OUTAGE,SERVICE_AVAILABILITY
+141,@comcastcares I understand.  Thanks for responding to me.  What is the reasoning for that channel no longer being available?  Is it off the air completely or just off of Comcast availability?,SERVICE_AVAILABILITY,TECHNICAL_ISSUE
+150,"@ComcastCares
+#mobile_Care- please can you let us know ETA for restoring Xfinity service in my area.I am in Santa Rosa CA",INTERNET_OUTAGE,SERVICE_AVAILABILITY
+162,"Hey @136958, isn't broadband internet classified as a utility? Aren't major internet providers like @115900 and @116072 supposed to comply with this by providing internet availability to all citizens? My town is still a DEAD ZONE, despite HUNDREDS of complaints.",SERVICE_AVAILABILITY,TECHNICAL_ISSUE
+174,"@comcastcares Are you going to add live sporting events to on demand availability? Because that’s what I was trying to record. Also, what about the streaming question?",SERVICE_AVAILABILITY,TECHNICAL_ISSUE
+25,"@116136 #Internetspeed  sucks, #cellular  edge connection is much faster then Comcast speed #bayarea effect of #Monopoly",SLOW_INTERNET,TECHNICAL_ISSUE
+34,@comcastcares  my bill went up 60% and customer service said if I drop my internet speed by half they could save me $1. Is this accurate?,BILLING_ISSUE,SLOW_INTERNET
+43,@115900 YOUR CRAP INTERNET IS SLOW AND I HAVE NO TV IN THE NEW PAL AREA! I'M GETTING A DAMN FIRESTICK! I'VE HAD IT WITH YOUR BS SERVICE!,SLOW_INTERNET,INTERNET_OUTAGE
+104,@115900 care to explain to me why my WiFi doesn’t work when it says i’m connected?! connections been slow af for past 2 days.,SLOW_INTERNET,TECHNICAL_ISSUE
+118,"Over a month ago I️ reached out to @115900 for a new top box and some internet speed/connectivity issues. Still don’t have a new box, Nothing has been done, no one has contacted us. I️ am tired of paying @89342 and @115900 I️ only need one TRASH service.",TECHNICAL_ISSUE,INTERNET_OUTAGE
+120,@115900 just saw an ad that WiFi speeds will double. When will this happen?,SLOW_INTERNET,INTERNET_OUTAGE
+187,"@ComcastCares
+#mobile_Care Was straight up lied to in August about keeping internet speed with new promo, come to find out speed was significantly dropped. Called CS said nothing they could do. Flat out lying to cust. means nothing evidently.",SLOW_INTERNET,INTERNET_OUTAGE
+14,@comcastcares i need to change my modem to a new one that I bought ..help,TECHNICAL_ISSUE,PLAN_CHANGE
+16,"JFC, every other day with @115900 broadband and having to reboot our router. https://t.co/fnsW8LT6EZ",TECHNICAL_ISSUE,INTERNET_OUTAGE
+75,Ugh @115900 why is my Internet/Wi-Fi  out again!,INTERNET_OUTAGE,SLOW_INTERNET
+106,Re: Stunningly poor IPv6 tech support - Modem in Bridge Mode for IPv6 assignment https://t.co/ECRuluAXcH #comcastcares #fail,TECHNICAL_ISSUE,SLOW_INTERNET
+123,@comcastcares you guys better fix your internet. I can’t even connect to my own WiFi to send you this tweet. It’s getting ridiculous,TECHNICAL_ISSUE,SLOW_INTERNET
+142,@comcastcares my @115900 Stream TV Beta app caught in activation loop. Error createDrmSession.403-192. ‘This device can only access Xfinity stream on your in-home XFINITY WiFi’. I’m on my Home COMCAST WiFi Network. Can’t activate? Frustrated!,TECHNICAL_ISSUE,INTERNET_OUTAGE
+154,"@comcastcares My cable is still not working correctly,i was on the phone for almost 2 hours and it’s getting frustrating especially because i just got the service today 😩😩😭",TECHNICAL_ISSUE,INTERNET_OUTAGE
+164,@comcastcares my house is 2 miles away for your tap box but you won’t service my home. I was told there needs to be a demand.#Ijustneedwifi,SERVICE_AVAILABILITY,INTERNET_OUTAGE
+166,".@comcastcares recently told me they are upgrading speed &amp; I should buy a faster modem. Very cool. But if all my online is done wirelessly I'm probably not even using my current modem's top speed, correct? #Comcast @115900",TECHNICAL_ISSUE,SLOW_INTERNET
+168,"@ComcastCares
+#mobile_CareXI internet isn’t working even after several restarts of the modem... please help!",TECHNICAL_ISSUE,INTERNET_OUTAGE

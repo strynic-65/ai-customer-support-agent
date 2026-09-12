@@ -1,0 +1,21 @@
+customer_message,expected_escalation
+"My internet is slow today",AUTO_HANDLE
+"My WiFi is not working",AUTO_HANDLE
+"Why is my bill higher this month?",AUTO_HANDLE
+"I want to change my internet plan",AUTO_HANDLE
+"Is Xfinity available at my new address?",AUTO_HANDLE
+"How can I reset my account password?",AUTO_HANDLE
+"My payment failed",AUTO_HANDLE
+"Can you help me troubleshoot my router?",AUTO_HANDLE
+"I have no internet connection",AUTO_HANDLE
+"How do I pay my bill?",AUTO_HANDLE
+"Someone hacked my account",ESCALATE
+"I see unauthorized access to my account",ESCALATE
+"My identity has been stolen and I think my account is compromised",ESCALATE
+"I think someone accessed my account without permission",ESCALATE
+"I am furious with your service. I want to speak to a human",ESCALATE
+"This is ridiculous. Get me a real person now",ESCALATE
+"I want to talk to a customer service representative",ESCALATE
+"I am extremely frustrated and want to speak to someone",ESCALATE
+"I am taking legal action against Comcast",ESCALATE
+"Your service is terrible and I demand a human agent",ESCALATE

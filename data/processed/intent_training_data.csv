@@ -1,0 +1,179 @@
+tweet_id,conversation_id,customer_message,pseudo_intent,similarity,agreement
+590432,590432.0,"@ComcastCares
+#mobile_Care I make a double payment on my account and they told me that they was going to refund the second payment back to my debit card but it still nothing there?",PAYMENT_ISSUE,1.0000000000000007,5
+638355,638355.0,"@ComcastCares
+#mobile_Care Was straight up lied to in August about keeping internet speed with new promo, come to find out speed was significantly dropped. Called CS said nothing they could do. Flat out lying to cust. means nothing evidently.",SLOW_INTERNET,1.0000000000000007,2
+182085,182085.0,"@ComcastCares
+#mobile_CareXI is there a problem with service in my area 48066?",INTERNET_OUTAGE,1.0000000000000004,3
+835037,835037.0,"@ComcastCares
+#mobile_CareXI
+Is there an outage?",INTERNET_OUTAGE,1.0000000000000002,5
+2779790,2779790.0,"@ComcastCares
+#mobile_CareXI is there an outage?",INTERNET_OUTAGE,1.0000000000000002,5
+1052689,1052689.0,"@ComcastCares
+#mobile_Care I would like to know the remaining time on my contract and the fee to cancel.",CANCELLATION,1.0000000000000002,4
+2204907,2204907.0,"@ComcastCares
+#mobile_CareXI my wifi/voice has gone out every day this week. Any thoughts?",INTERNET_OUTAGE,1.0000000000000002,4
+2922159,2922159.0,"@ComcastCares
+#mobile_Care
+I want to cancel my appointment for tomorrow",CANCELLATION,1.0000000000000002,4
+256299,256299.0,"@ComcastCares: #mobile_CareXI
+slow internet in pasadena md today",INTERNET_OUTAGE,1.0000000000000002,3
+2466971,2466971.0,"@ComcastCares
+#mobile_CareXI internet isn’t working even after several restarts of the modem... please help!",TECHNICAL_ISSUE,1.0000000000000002,3
+1575771,1575771.0,"@ComcastCares
+#mobile_Care i was trying to set up a payment arrangement",PAYMENT_ISSUE,1.0000000000000002,3
+2235932,2235932.0,"@comcastcares Is Webmail going to work at all today? Ever? 
+
+This upgrade is an epic fail. I am sure I am not the first person to tell you that.",TECHNICAL_ISSUE,1.0000000000000002,3
+595384,595384.0,"@ComcastCares
+#mobile_Care the WiFi in house has dropped out",INTERNET_OUTAGE,1.0000000000000002,3
+2058666,2058666.0,"@ComcastCares: #mobile_Care
+It's saying it's updating my account for the last 4 hours",ACCOUNT_ISSUE,1.0000000000000002,2
+1854267,1854267.0,"@ComcastCares
+#mobile_CareXIwhy does my Router /Modem keep on changing to voice and data mode when I don’t even have a telephone connected",TECHNICAL_ISSUE,1.0000000000000002,2
+1298145,1298145.0,"@ComcastCares: #mobile_Care
+How do I cancel my service with y'all ?",CANCELLATION,1.0000000000000002,2
+1963160,1963160.0,"@ComcastCares
+#mobile_Care
+I have current service at my residence and want to add internet to my apartment. Can I or is it new account?",ACCOUNT_ISSUE,1.0000000000000002,2
+2140047,2140051.0,"@comcastcares 
+Unfortunately, You can't do much about that. I tried through the phone and service center. The results is canceling my accou.",CANCELLATION,1.0000000000000002,2
+2376271,2376271.0,"@ComcastCares
+#mobile_Care account info",ACCOUNT_ISSUE,1.0000000000000002,2
+2961024,2961024.0,"I am on the phone with  @comcastcares right now. Mind you i pay for 150mbps and my @55 came back at 92mbps. I swear the rep just told me that for those who are on that plan it is good when they get 92 download speed. hmmm
+
+#cantmakethisup #forreal #confused",ACCOUNT_ISSUE,1.0000000000000002,2
+104417,104417.0,"@ComcastCares
+#mobile_Care been trying to pay my bill online since yesterday. App and website are not working. I spoke to customer service via chat yesterday and Irene said it would be fixed. I don’t want to be charged a late fee for your website issues.",PAYMENT_ISSUE,1.0000000000000002,2
+558790,558790.0,"@115900 upgrade to the new faster service... as our service doesn't even work. #xfinitysucks
+
+@ATT you guys up and running right now?",PLAN_CHANGE,1.0000000000000002,2
+573384,573384.0,"@ComcastCares
+#mobile_CareXI
+Internet real slow. 2.02Mbps. How can I resolve?",SLOW_INTERNET,1.0000000000000002,2
+2029068,2029068.0,"@ComcastCares
+#mobile_CareXI my WiFi has been out for over an hour 🤬😑",INTERNET_OUTAGE,1.0,5
+2380009,2380009.0,"@comcastcares Going to keep post my internet speed tests until you stop throttling our internet speeds. 
+Context: One computer browsing facebook. No streaming video. 
+#comcast https://t.co/Aynx9PFcrG",SLOW_INTERNET,1.0,5
+1255350,1255350.0,"@ComcastCares
+#mobile_CareXI Why is my internet speed so slow? At this time of night/morning (12:20 am)? What gives?",SLOW_INTERNET,1.0,4
+1792677,1792677.0,"@ComcastCares
+#mobile_Care- please can you let us know ETA for restoring Xfinity service in my area.I am in Santa Rosa CA",SERVICE_AVAILABILITY,1.0,3
+714938,714938.0,"@ComcastCares
+#mobile_Care Still waiting for $5.00 credit to show on my account. And issues with account requirement for autopay. never told",PAYMENT_ISSUE,1.0,2
+1804644,1804644.0,"@ComcastCares
+#mobile_Care why is there a damn tv or internet outage every other day why am I paying this kind of money for this bad service",INTERNET_OUTAGE,1.0,2
+999495,999495.0,"@ComcastCares
+#mobile_Care my internet and cable just went down! Miami Lakes FL 33018",INTERNET_OUTAGE,1.0,2
+1013242,1013242.0,"@comcastcares So, we have a contract which locks in proces, but yet, you increase prices? $9 for local broadcast is OUTRAGEOUS!
+
+@136958",BILLING_ISSUE,1.0,2
+1300978,1300978.0,"@comcastcares Your LPGA coverage is showing the SLIME Darby, instead of SIME Darby; really?
+@31868",TECHNICAL_ISSUE,1.0,2
+1449521,1449521.0,"@ComcastCares
+#mobile_Care My bill is in Spanish. I need to be in Englis. How do I fix that?",BILLING_ISSUE,1.0,2
+2039802,2039802.0,"@ComcastCares
+#mobile_Care upgraded to 150mb from 25mb on Saturday and still only getting 25mb!",SLOW_INTERNET,1.0,2
+1198784,1198787.0,"Well. Both AT&amp;T and Comcast are not available in my area :(
+I don't think I can get gigabit internet",SERVICE_AVAILABILITY,0.9999999999999998,5
+2184291,2184291.0,"@ComcastCares
+#mobile_Care I've been having an issue with by bill as well as a payment that was supposed to be returned to me. Help!",PAYMENT_ISSUE,0.9999999999999996,2
+2433108,2433108.0,"@ComcastCares
+#mobile_CareXI is there an outage in Shoreline, WA?",INTERNET_OUTAGE,0.863366301365142,5
+290639,290639.0,@ComcastCares: #mobile_CareXI is there an outage in my area 30317?,INTERNET_OUTAGE,0.828306530527351,4
+2338898,2338898.0,"@ComcastCares
+#mobile_CareXI. Is there an outage in Happy Valley?",INTERNET_OUTAGE,0.7929229271080039,5
+2630472,2630472.0,"@ComcastCares
+#mobile_CareXI is there an outage in 15236 zip code?",INTERNET_OUTAGE,0.7857184299501206,5
+670738,670738.0,"@ComcastCares
+#mobile_CareXI is there an outage in our area?",INTERNET_OUTAGE,0.7621838563393135,5
+1552977,1552977.0,"@ComcastCares
+#mobile_Care how do I cancel my account",CANCELLATION,0.7499672638814804,2
+594224,594224.0,"@ComcastCares
+#mobile_CareXI is there an outage in zip code 77070?",INTERNET_OUTAGE,0.7329334716453938,5
+1882512,1882512.0,"@ComcastCares
+#mobile_CareXI is there an outage in my area? 94611",INTERNET_OUTAGE,0.7305792847426021,4
+2693298,2693298.0,"@ComcastCares
+#mobile_CareXI
+Is there an outage around 64th and Lowell?",INTERNET_OUTAGE,0.7189694541770081,5
+1943299,1943299.0,"@ComcastCares
+#mobile_CareXI is there an outage? Zip 80015",INTERNET_OUTAGE,0.7134643387158132,5
+2702593,2702594.0,@115900 Trash @comcastcares,TECHNICAL_ISSUE,0.6784138478938967,3
+2911333,2911333.0,"@ComcastCares
+#mobile_CareXI is there an internet outage in Elgin, IL? Zip 60124",INTERNET_OUTAGE,0.6620811152085214,5
+1025829,1025829.0,@116136 charge an arm and a leg for they shitty ass wifi 🙄,BILLING_ISSUE,0.6306510521551411,2
+900619,900619.0,"@ComcastCares
+#mobile_CareXI is there an outage in the Maple Valley, WA area",INTERNET_OUTAGE,0.6221650185591117,5
+890940,890940.0,"@ComcastCares
+Can you tell me why my internet is down?",SLOW_INTERNET,0.6065544583861641,3
+2437968,2437968.0,@comcastcares Is there an outage in the 37062 area?,INTERNET_OUTAGE,0.6036493095434664,5
+1077661,1077661.0,"@ComcastCares
+#mobile_CareXI internet is down. Is there an outage in #delraybeach",INTERNET_OUTAGE,0.597202491494817,4
+1893107,1893107.0,"@ComcastCares
+#mobile_CareXI is there an outage for internet in South Burlington vermont 05403",INTERNET_OUTAGE,0.5896750770525386,4
+946351,946351.0,"@ComcastCares
+#mobile_Care I need to cancel my appointment",CANCELLATION,0.5878796821634276,4
+1751802,1751802.0,@116136 can you tell me why my internet is running 25 times slower than normal.,SLOW_INTERNET,0.5816753437513568,2
+1594375,1594375.0,"@comcastcares are you having issues in Fishers, IN?",SLOW_INTERNET,0.5803848588716081,2
+1854261,1854261.0,@comcastcares is there an outage in my area: 02048?,INTERNET_OUTAGE,0.5613152947317724,4
+2072602,2072602.0,@115900 is there an outage in my area ?!,INTERNET_OUTAGE,0.5613152947317724,4
+2239312,2239312.0,@115900 outage in San Francisco?,INTERNET_OUTAGE,0.5484554189683829,5
+2916869,2916869.0,.@comcastcares is there an outage in Chicago?,INTERNET_OUTAGE,0.5481471706605371,5
+2623520,2623520.0,@comcastcares I need to talk to someone one About my account,ACCOUNT_ISSUE,0.5443599638074421,2
+2947854,2947854.0,"@ComcastCares
+#mobile_Care is there an outage at 6003@",INTERNET_OUTAGE,0.5413033062161997,4
+191364,191364.0,"@ComcastCares: #mobile_CareXI
+My internet is down. Is there an outage in my area?",INTERNET_OUTAGE,0.5379133243729105,4
+1801111,1801111.0,@comcastcares is there an outage in NorCal?,INTERNET_OUTAGE,0.5366381221535517,5
+2381047,2381047.0,@comcastcares is there an outage in Seattle 98122,INTERNET_OUTAGE,0.5351133982878765,4
+2216336,2216336.0,@comcastcares is there an outage happening?,INTERNET_OUTAGE,0.5330298777945013,5
+1877816,1877816.0,"@ComcastCares
+#mobile_CareXI why is my internet down??",INTERNET_OUTAGE,0.5207189741532395,3
+2368082,2368082.0,"@ComcastCares
+#mobile_CareXI -why is my internet down?!",INTERNET_OUTAGE,0.5207189741532395,3
+978508,978508.0,"@ComcastCares
+#mobile_CareXI Is there an outage in Brighton, MI? Lost connection around 12:50 AM.",INTERNET_OUTAGE,0.5193060658015565,4
+2962225,2962225.0,This is @115900 HIGH speed Internet at work. #IGotAllDay #SMH #TurtleSpeed https://t.co/Y5WRJxk7bD,SLOW_INTERNET,0.5174513012680333,4
+1031978,1031978.0,"@ComcastCares
+#mobile_CareXI
+Is there an internet outage here in Portland, OR. ???",INTERNET_OUTAGE,0.5142031521775197,5
+453608,453608.0,How do I cancel a channel subscription @comcastcares?,CANCELLATION,0.5133744957023892,2
+2513556,2513556.0,@comcastcares Hello could you tell me why the internet is down in my area?,SERVICE_AVAILABILITY,0.5106101355769893,3
+2310044,2310044.0,@116136 @115900 is there an outage or something?,INTERNET_OUTAGE,0.5066007497845377,5
+564662,564662.0,@comcastcares is there an outage in detroit?,INTERNET_OUTAGE,0.5034066358237612,5
+294519,294520.0,@comcastcares 1031 Egremont Dr West Palm Beach FL 33406,TECHNICAL_ISSUE,0.5010817846574923,3
+2875449,2875449.0,@comcastcares Is there an outage in Portland?,INTERNET_OUTAGE,0.49832998570969567,5
+331049,331049.0,@comcastcares I need some help setting up a box. Not working at all ATM #frustrated,TECHNICAL_ISSUE,0.4956550262559336,5
+1300977,1300978.0,"@comcastcares Not a big deal, but the Xfinity guide shows “Slime” Darby instead of “SIME” Darby for LPGA event on now; my dollars not well spent.",TECHNICAL_ISSUE,0.49533091219261804,3
+1480493,1480494.0,"@comcastcares Sorry Sean, the number on the account is 203.949.9626",ACCOUNT_ISSUE,0.48921759012648003,2
+602043,602043.0,"@ComcastCares
+#mobile_CareXI
+Is there an outage in the area?  Our Internet has been crawling all weekend.",INTERNET_OUTAGE,0.48567711963371907,5
+1621041,1621032.0,@comcastcares @116136 still waiting....,INTERNET_OUTAGE,0.48425239316276525,2
+2191989,2191990.0,@116136 @comcastcares  still waiting,INTERNET_OUTAGE,0.48425239316276525,2
+1687902,1687902.0,"@ComcastCares
+#mobile_Care is there an outage in Hampstead NH right now?",INTERNET_OUTAGE,0.482158616529027,5
+2953291,2953291.0,"@ComcastCares
+#mobile_CareXI slow internet speed",SLOW_INTERNET,0.4810707229210515,4
+383620,383620.0,"@ComcastCares: #mobile_CareXI
+Internet isn't working",TECHNICAL_ISSUE,0.4735338771103459,2
+2601657,2601657.0,"@comcastcares Is there an outage in the Columbia Height, MN?",INTERNET_OUTAGE,0.4716461986169617,5
+1902814,1902814.0,"@ComcastCares
+#mobile_Care I need to cancel my appt for tomorrow",CANCELLATION,0.4710626582797635,4
+2167088,2167088.0,"@ComcastCares
+#mobile_CareXI is there an outage in 80010 ?  No internet. Nothing appears to be wrong on this end",INTERNET_OUTAGE,0.47012642747936356,5
+2100118,2100120.0,@comcastcares I’m not on the account.,ACCOUNT_ISSUE,0.4698627639326227,2
+2344121,2344121.0,"@comcastcares what is going on with my internet connection? 
+No phone service, no internet connection! 
+#Fix-It",TECHNICAL_ISSUE,0.465915237757758,3
+1455568,1455568.0,"@comcastcares Is there an outage in Isle of Palms,SC?",INTERNET_OUTAGE,0.46476436911945573,5
+2495298,1942576.0,"@comcastcares ESPNDEPORTES en español, serie mundial de béisbol, gracias",TECHNICAL_ISSUE,0.46336744958968656,5
+2763956,2763956.0,"@comcastcares is there an outage in the Malrton, NJ area",INTERNET_OUTAGE,0.4610003137663571,5
+1543784,1543784.0,"@ComcastCares
+#mobile_Care is there an outage in Olive Branch, MS?",INTERNET_OUTAGE,0.4596683539634515,5
+1115970,1115970.0,"@ComcastCares
+#mobile_CareXI
+My internet went out. Is there an outage? Website shows none.",INTERNET_OUTAGE,0.4584425709317087,4
+521891,521892.0,"@comcastcares What account info, exactly?",ACCOUNT_ISSUE,0.45601963224308456,3

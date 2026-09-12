@@ -1,0 +1,21 @@
+customer_message,expected_escalation,predicted_escalation,intent,confidence,reasons
+My internet is slow today,AUTO_HANDLE,AUTO_HANDLE,SLOW_INTERNET,0.92,
+My WiFi is not working,AUTO_HANDLE,AUTO_HANDLE,INTERNET_OUTAGE,0.93,
+Why is my bill higher this month?,AUTO_HANDLE,AUTO_HANDLE,BILLING_ISSUE,0.87,
+I want to change my internet plan,AUTO_HANDLE,AUTO_HANDLE,GENERAL_INQUIRY,0.4,
+Is Xfinity available at my new address?,AUTO_HANDLE,AUTO_HANDLE,SERVICE_AVAILABILITY,0.91,
+How can I reset my account password?,AUTO_HANDLE,AUTO_HANDLE,GENERAL_INQUIRY,0.4,
+My payment failed,AUTO_HANDLE,AUTO_HANDLE,PAYMENT_ISSUE,0.92,
+Can you help me troubleshoot my router?,AUTO_HANDLE,AUTO_HANDLE,GENERAL_INQUIRY,0.4,
+I have no internet connection,AUTO_HANDLE,AUTO_HANDLE,INTERNET_OUTAGE,0.93,
+How do I pay my bill?,AUTO_HANDLE,AUTO_HANDLE,PAYMENT_ISSUE,0.92,
+Someone hacked my account,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Possible security or privacy concern
+I see unauthorized access to my account,ESCALATE,ESCALATE,ACCOUNT_ISSUE,0.92,Possible security or privacy concern
+My identity has been stolen and I think my account is compromised,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Possible security or privacy concern
+I think someone accessed my account without permission,ESCALATE,ESCALATE,ACCOUNT_ISSUE,0.92,Possible security or privacy concern
+I am furious with your service. I want to speak to a human,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer appears highly frustrated | Customer requested a human agent
+This is ridiculous. Get me a real person now,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer appears highly frustrated | Customer requested a human agent
+I want to talk to a customer service representative,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer requested a human agent
+I am extremely frustrated and want to speak to someone,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer appears highly frustrated | Customer requested a human agent
+I am taking legal action against Comcast,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer appears highly frustrated
+Your service is terrible and I demand a human agent,ESCALATE,ESCALATE,GENERAL_INQUIRY,0.4,Customer requested a human agent
