@@ -1,12 +1,21 @@
 """
 Evaluate generated Comcast support replies using LLM-as-a-Judge.
 
-If Gemini quota is unavailable, the script records the evaluation
-as unavailable instead of producing misleading scores.
+The evaluator expects the same scoring schema used by JUDGE_PROMPT:
+
+    relevance
+    helpfulness
+    accuracy
+    empathy
+    conciseness
+    safety
+    overall_score
+
+If Gemini quota is unavailable, the evaluation is marked as
+unavailable instead of generating misleading scores.
 """
 
 import os
-import re
 import time
 
 import pandas as pd
@@ -15,106 +24,174 @@ from src.pipeline import run_pipeline
 from src.evaluation.llm_judge import judge_reply
 
 
+# ============================================================
+# CONFIGURATION
+# ============================================================
+
 INPUT_PATH = "data/golden/golden_evaluation_set.csv"
+
 OUTPUT_PATH = "reports/results/reply_evaluation.csv"
 
 # Number of golden examples to evaluate.
 SAMPLE_SIZE = 5
 
-# Delay between successful Gemini requests.
+# Delay between Gemini requests.
 REQUEST_DELAY = 15
 
 
 # ============================================================
-# SCORE EXTRACTION
+# EXPECTED METRICS
 # ============================================================
 
-def extract_score(text, metric):
-    """
-    Extract a score such as:
-
-        RELEVANCE: 5
-
-    Returns None if the score cannot be found.
-    """
-
-    if not isinstance(text, str):
-        return None
-
-    pattern = rf"{metric}\s*:\s*(\d+(?:\.\d+)?)"
-
-    match = re.search(
-        pattern,
-        text,
-        re.IGNORECASE
-    )
-
-    if match:
-        return float(match.group(1))
-
-    return None
+METRICS = [
+    "relevance",
+    "helpfulness",
+    "accuracy",
+    "empathy",
+    "conciseness",
+    "safety",
+    "overall_score",
+]
 
 
 # ============================================================
-# CHECK WHETHER JUDGE RETURNED REAL SCORES
+# VALID JUDGE RESPONSE CHECK
 # ============================================================
 
 def has_valid_judge_scores(judge_result):
     """
-    Check whether the LLM judge returned the expected
-    six evaluation metrics.
+    Check whether the LLM judge returned all expected scores.
+
+    Every score must be between 1 and 5.
     """
 
-    metrics = [
-        "RELEVANCE",
-        "HELPFULNESS",
-        "TONE",
-        "ACCURACY",
-        "BRAND_STYLE",
-        "OVERALL",
-    ]
-
-    if not isinstance(judge_result, str):
+    if not isinstance(judge_result, dict):
         return False
 
-    found_scores = 0
+    for metric in METRICS:
 
-    for metric in metrics:
-        if extract_score(
-            judge_result,
-            metric
-        ) is not None:
-            found_scores += 1
+        value = judge_result.get(metric)
 
-    return found_scores == len(metrics)
+        if value is None:
+            return False
+
+        try:
+            score = float(value)
+        except (TypeError, ValueError):
+            return False
+
+        if not 1 <= score <= 5:
+            return False
+
+    return True
 
 
 # ============================================================
-# DETECT GEMINI QUOTA FAILURE
+# DETECT QUOTA FAILURE
 # ============================================================
 
-def is_quota_error(text):
+def is_quota_error(judge_result):
     """
-    Detect Gemini quota/rate-limit messages.
+    Detect Gemini quota/rate-limit errors.
+
+    Supports the explicit status returned by llm_judge.py
+    as well as fallback text detection.
     """
 
-    if not isinstance(text, str):
+    if not isinstance(judge_result, dict):
         return False
 
-    text_lower = text.lower()
+    # --------------------------------------------------------
+    # Preferred: explicit error type
+    # --------------------------------------------------------
+
+    if judge_result.get("error_type") == "QUOTA_EXHAUSTED":
+        return True
+
+    # --------------------------------------------------------
+    # Preferred: explicit API status
+    # --------------------------------------------------------
+
+    if judge_result.get("api_status") == "QUOTA_EXHAUSTED":
+        return True
+
+    # --------------------------------------------------------
+    # Fallback: inspect error/raw response
+    # --------------------------------------------------------
+
+    error_text = str(
+        judge_result.get("error", "")
+    )
+
+    raw_response = str(
+        judge_result.get("raw_response", "")
+    )
+
+    api_error = str(
+        judge_result.get("api_error", "")
+    )
+
+    combined_text = (
+        error_text
+        + " "
+        + raw_response
+        + " "
+        + api_error
+    ).lower()
 
     quota_terms = [
         "quota",
         "resource_exhausted",
+        "resource exhausted",
         "rate limit",
+        "rate_limit",
         "too many requests",
         "429",
     ]
 
     return any(
-        term in text_lower
+        term in combined_text
         for term in quota_terms
     )
+
+
+# ============================================================
+# CREATE EMPTY RESULT
+# ============================================================
+
+def create_result_row(
+    customer_message,
+    detected_intent=None,
+    generated_response="",
+    judge_status="ERROR",
+    judge_feedback="",
+    judge_result=None,
+):
+    """
+    Create a standardized evaluation result row.
+    """
+
+    if not isinstance(judge_result, dict):
+        judge_result = {}
+
+    row = {
+        "customer_message": customer_message,
+        "detected_intent": detected_intent,
+        "generated_response": generated_response,
+
+        "relevance": judge_result.get("relevance"),
+        "helpfulness": judge_result.get("helpfulness"),
+        "accuracy": judge_result.get("accuracy"),
+        "empathy": judge_result.get("empathy"),
+        "conciseness": judge_result.get("conciseness"),
+        "safety": judge_result.get("safety"),
+        "overall_score": judge_result.get("overall_score"),
+
+        "judge_status": judge_status,
+        "judge_feedback": judge_feedback,
+    }
+
+    return row
 
 
 # ============================================================
@@ -123,13 +200,37 @@ def is_quota_error(text):
 
 def evaluate_replies():
 
-    # ---------------------------------------------------------
-    # 1. Load Golden Evaluation Set
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 1. LOAD GOLDEN DATASET
+    # --------------------------------------------------------
 
-    df = pd.read_csv(
-        INPUT_PATH
-    )
+    if not os.path.exists(INPUT_PATH):
+
+        print(
+            f"ERROR: Golden evaluation file not found: "
+            f"{INPUT_PATH}"
+        )
+
+        return
+
+    df = pd.read_csv(INPUT_PATH)
+
+    if df.empty:
+
+        print(
+            "ERROR: Golden evaluation set is empty."
+        )
+
+        return
+
+    if "customer_message" not in df.columns:
+
+        print(
+            "ERROR: Dataset must contain "
+            "'customer_message' column."
+        )
+
+        return
 
     sample_size = min(
         SAMPLE_SIZE,
@@ -150,18 +251,18 @@ def evaluate_replies():
 
     quota_exhausted = False
 
-    # ---------------------------------------------------------
-    # 2. Evaluate each example
-    # ---------------------------------------------------------
+    # --------------------------------------------------------
+    # 2. EVALUATE EACH EXAMPLE
+    # --------------------------------------------------------
 
     for position, (_, row) in enumerate(
         sample.iterrows(),
         start=1
     ):
 
-        customer_message = row[
-            "customer_message"
-        ]
+        customer_message = str(
+            row["customer_message"]
+        )
 
         print("\n" + "=" * 60)
 
@@ -177,9 +278,9 @@ def evaluate_replies():
 
         try:
 
-            # -------------------------------------------------
-            # Run complete support pipeline
-            # -------------------------------------------------
+            # ------------------------------------------------
+            # RUN SUPPORT PIPELINE
+            # ------------------------------------------------
 
             pipeline_result = run_pipeline(
                 customer_message,
@@ -187,100 +288,61 @@ def evaluate_replies():
             )
 
             generated_response = (
-                pipeline_result["reply"]
+                pipeline_result.get(
+                    "reply",
+                    ""
+                )
             )
 
             retrieved_cases = (
-                pipeline_result["retrieved_cases"]
+                pipeline_result.get(
+                    "retrieved_cases",
+                    []
+                )
             )
 
-            # -------------------------------------------------
-            # If quota was already detected, do not make
-            # additional judge requests.
-            # -------------------------------------------------
+            detected_intent = (
+                pipeline_result.get(
+                    "intent",
+                    "GENERAL_INQUIRY"
+                )
+            )
+
+            # ------------------------------------------------
+            # LLM JUDGE
+            # ------------------------------------------------
 
             if quota_exhausted:
 
-                judge_result = (
-                    "LLM_JUDGE_UNAVAILABLE: "
-                    "Gemini quota exhausted."
-                )
+                judge_result = {
+                    "error": (
+                        "LLM judge unavailable: "
+                        "Gemini quota exhausted."
+                    ),
+                    "error_type": "QUOTA_EXHAUSTED",
+                    "api_status": "QUOTA_EXHAUSTED",
+                }
 
             else:
-
-                # ---------------------------------------------
-                # Ask LLM judge
-                # ---------------------------------------------
 
                 judge_result = judge_reply(
                     customer_message=customer_message,
                     generated_response=generated_response,
-                    historical_cases=retrieved_cases
+                    intent=detected_intent,
+                    historical_cases=retrieved_cases,
                 )
 
-                # ---------------------------------------------
-                # Check whether the judge returned valid scores
-                # ---------------------------------------------
+                # --------------------------------------------
+                # CHECK QUOTA
+                # --------------------------------------------
 
-                if not has_valid_judge_scores(
-                    judge_result
-                ):
+                if is_quota_error(judge_result):
 
-                    if is_quota_error(
-                        judge_result
-                    ):
+                    quota_exhausted = True
 
-                        quota_exhausted = True
-
-                        judge_result = (
-                            "LLM_JUDGE_UNAVAILABLE: "
-                            "Gemini quota exhausted."
-                        )
-
-                    else:
-
-                        judge_result = (
-                            "LLM_JUDGE_INVALID_RESPONSE: "
-                            + str(judge_result)
-                        )
-
-            # -------------------------------------------------
-            # Extract scores
-            # -------------------------------------------------
-
-            relevance = extract_score(
-                judge_result,
-                "RELEVANCE"
-            )
-
-            helpfulness = extract_score(
-                judge_result,
-                "HELPFULNESS"
-            )
-
-            tone = extract_score(
-                judge_result,
-                "TONE"
-            )
-
-            accuracy = extract_score(
-                judge_result,
-                "ACCURACY"
-            )
-
-            brand_style = extract_score(
-                judge_result,
-                "BRAND_STYLE"
-            )
-
-            overall = extract_score(
-                judge_result,
-                "OVERALL"
-            )
-
-            # -------------------------------------------------
-            # Determine evaluation status
-            # -------------------------------------------------
+            # ------------------------------------------------
+            # DETERMINE STATUS
+            # ------------------------------------------------
 
             if has_valid_judge_scores(
                 judge_result
@@ -288,49 +350,127 @@ def evaluate_replies():
 
                 judge_status = "SUCCESS"
 
-            elif "QUOTA" in str(
+            elif is_quota_error(
                 judge_result
-            ).upper():
+            ):
 
-                judge_status = "QUOTA_EXHAUSTED"
+                judge_status = (
+                    "QUOTA_EXHAUSTED"
+                )
+
+            elif isinstance(judge_result, dict):
+
+                judge_status = (
+                    judge_result.get(
+                        "error_type",
+                        "INVALID_JUDGE_RESPONSE"
+                    )
+                )
+
+                if judge_status not in {
+                    "INVALID_JUDGE_RESPONSE",
+                    "API_ERROR",
+                    "UNEXPECTED_ERROR",
+                    "INVALID_INPUT",
+                }:
+
+                    judge_status = (
+                        "INVALID_JUDGE_RESPONSE"
+                    )
 
             else:
 
-                judge_status = "INVALID_JUDGE_RESPONSE"
+                judge_status = (
+                    "INVALID_JUDGE_RESPONSE"
+                )
 
-            # -------------------------------------------------
-            # Store result
-            # -------------------------------------------------
+            # ------------------------------------------------
+            # EXPLANATION
+            # ------------------------------------------------
+
+            if isinstance(judge_result, dict):
+
+                explanation = (
+                    judge_result.get(
+                        "explanation",
+                        judge_result.get(
+                            "error",
+                            ""
+                        )
+                    )
+                )
+
+            else:
+
+                explanation = str(
+                    judge_result
+                )
+
+            # ------------------------------------------------
+            # STORE RESULT
+            # ------------------------------------------------
 
             results.append(
-                {
-                    "customer_message": customer_message,
-                    "generated_response": generated_response,
-                    "relevance": relevance,
-                    "helpfulness": helpfulness,
-                    "tone": tone,
-                    "accuracy": accuracy,
-                    "brand_style": brand_style,
-                    "overall": overall,
-                    "judge_status": judge_status,
-                    "judge_feedback": judge_result,
-                }
+                create_result_row(
+                    customer_message=customer_message,
+                    detected_intent=detected_intent,
+                    generated_response=generated_response,
+                    judge_status=judge_status,
+                    judge_feedback=explanation,
+                    judge_result=judge_result,
+                )
             )
 
-            print("\nGenerated Response:")
+            # ------------------------------------------------
+            # DISPLAY
+            # ------------------------------------------------
+
+            print(
+                "\nGenerated Response:"
+            )
+
             print(
                 generated_response
             )
 
-            print("\nJudge Status:")
+            print(
+                "\nDetected Intent:"
+            )
+
+            print(
+                detected_intent
+            )
+
+            print(
+                "\nJudge Status:"
+            )
+
             print(
                 judge_status
             )
 
-            print("\nJudge:")
-            print(
-                judge_result
-            )
+            if judge_status == "SUCCESS":
+
+                print(
+                    "\nJudge Scores:"
+                )
+
+                for metric in METRICS:
+
+                    print(
+                        f"{metric}: "
+                        f"{judge_result.get(metric)}"
+                    )
+
+            else:
+
+                print(
+                    "\nJudge:"
+                )
+
+                print(
+                    judge_result
+                )
 
         except Exception as error:
 
@@ -340,23 +480,18 @@ def evaluate_replies():
             )
 
             results.append(
-                {
-                    "customer_message": customer_message,
-                    "generated_response": "",
-                    "relevance": None,
-                    "helpfulness": None,
-                    "tone": None,
-                    "accuracy": None,
-                    "brand_style": None,
-                    "overall": None,
-                    "judge_status": "ERROR",
-                    "judge_feedback": str(error),
-                }
+                create_result_row(
+                    customer_message=customer_message,
+                    detected_intent=None,
+                    generated_response="",
+                    judge_status="ERROR",
+                    judge_feedback=str(error),
+                )
             )
 
-        # -----------------------------------------------------
-        # Wait only if Gemini is still available.
-        # -----------------------------------------------------
+        # ----------------------------------------------------
+        # WAIT BETWEEN GEMINI REQUESTS
+        # ----------------------------------------------------
 
         if (
             position < sample_size
@@ -372,29 +507,24 @@ def evaluate_replies():
                 REQUEST_DELAY
             )
 
-    # ---------------------------------------------------------
-    # 3. Create results DataFrame
-    # ---------------------------------------------------------
+    # ========================================================
+    # 3. RESULTS DATAFRAME
+    # ========================================================
 
     results_df = pd.DataFrame(
         results
     )
 
-    # ---------------------------------------------------------
-    # 4. Calculate averages
-    # ---------------------------------------------------------
-
-    numeric_columns = [
-        "relevance",
-        "helpfulness",
-        "tone",
-        "accuracy",
-        "brand_style",
-        "overall",
-    ]
+    # ========================================================
+    # 4. PRINT METRICS
+    # ========================================================
 
     print("\n" + "=" * 60)
-    print("REPLY QUALITY RESULTS")
+
+    print(
+        "REPLY QUALITY RESULTS"
+    )
+
     print("=" * 60)
 
     print(
@@ -415,7 +545,25 @@ def evaluate_replies():
             successful_count
         )
 
-        for column in numeric_columns:
+        # ----------------------------------------------------
+        # Status counts
+        # ----------------------------------------------------
+
+        print(
+            "\nJudge Status Counts:"
+        )
+
+        print(
+            results_df[
+                "judge_status"
+            ].value_counts()
+        )
+
+        # ----------------------------------------------------
+        # Numeric metrics
+        # ----------------------------------------------------
+
+        for column in METRICS:
 
             average = results_df[
                 column
@@ -424,8 +572,7 @@ def evaluate_replies():
             if pd.isna(average):
 
                 print(
-                    f"{column.upper():15}: "
-                    "N/A"
+                    f"{column.upper():15}: N/A"
                 )
 
             else:
@@ -441,9 +588,9 @@ def evaluate_replies():
             "No evaluation results were generated."
         )
 
-    # ---------------------------------------------------------
-    # 5. Save results
-    # ---------------------------------------------------------
+    # ========================================================
+    # 5. SAVE RESULTS
+    # ========================================================
 
     os.makedirs(
         "reports/results",
@@ -455,7 +602,10 @@ def evaluate_replies():
         index=False
     )
 
-    print("\nResults saved to:")
+    print(
+        "\nResults saved to:"
+    )
+
     print(
         OUTPUT_PATH
     )
@@ -466,4 +616,5 @@ def evaluate_replies():
 # ============================================================
 
 if __name__ == "__main__":
+
     evaluate_replies()

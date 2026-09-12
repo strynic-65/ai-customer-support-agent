@@ -1,8 +1,24 @@
-from src.intent.ml_classifier import (
-    predict_intent,
-    train_final_model,
-)
+"""
+End-to-end AI Customer Support Agent Pipeline.
 
+Flow:
+
+Customer Message
+        ↓
+Hybrid Intent Classification
+        ↓
+Confidence Analysis
+        ↓
+Historical Case Retrieval (RAG)
+        ↓
+Response Generation
+        ↓
+Escalation Detection
+        ↓
+Final Decision
+"""
+
+from src.intent.ml_classifier import predict_intent, train_final_model
 from src.intent.confidence import analyze_confidence
 
 from src.retrieval.vector_store import VectorStore
@@ -15,14 +31,14 @@ from src.escalation.decision import make_decision
 
 
 # ============================================================
-# LOAD FINAL INTENT CLASSIFIER
+# LOAD INTENT CLASSIFIER
 # ============================================================
 
-print("Loading final intent classifier...")
+print("Loading intent classifier...")
 
 _INTENT_VECTORIZER, _INTENT_CLASSIFIER = train_final_model()
 
-print("Final intent classifier ready.")
+print("Intent classifier loaded.")
 
 
 # ============================================================
@@ -32,16 +48,11 @@ print("Final intent classifier ready.")
 print("Loading Comcast vector database...")
 
 _VECTOR_STORE = VectorStore.load(
-    "data/processed/comcast_faiss.index",
-    "data/processed/comcast_documents.pkl",
+    index_path="data/processed/comcast_faiss.index",
+    documents_path="data/processed/comcast_documents.pkl"
 )
 
-print("Vector database ready.")
-
-
-# ============================================================
-# CREATE RETRIEVER
-# ============================================================
+print("Comcast vector database loaded.")
 
 _RETRIEVER = Retriever(
     vector_store=_VECTOR_STORE
@@ -49,261 +60,475 @@ _RETRIEVER = Retriever(
 
 
 # ============================================================
-# MAIN PIPELINE
+# MAIN SUPPORT AGENT
 # ============================================================
 
-def run_pipeline(customer_message, top_k=3):
+def run_support_agent(customer_message, top_k=3):
+    """
+    Run the complete AI customer support pipeline.
+    """
+
+    if not isinstance(customer_message, str):
+        raise ValueError(
+            "customer_message must be a string."
+        )
+
+    if not customer_message.strip():
+        raise ValueError(
+            "customer_message cannot be empty."
+        )
 
     # ========================================================
-    # 1. INTENT CLASSIFICATION
+    # STEP 1: INTENT CLASSIFICATION
     # ========================================================
 
     intent_result = predict_intent(
         customer_message,
         _INTENT_VECTORIZER,
-        _INTENT_CLASSIFIER,
-    )
-
-    # --------------------------------------------------------
-    # Final hybrid classification
-    # --------------------------------------------------------
-
-    final_intent = intent_result.get(
-        "intent",
-        "GENERAL_INQUIRY"
-    )
-
-    final_confidence = float(
-        intent_result.get(
-            "confidence",
-            0.0
-        )
-    )
-
-    # --------------------------------------------------------
-    # Raw ML classification
-    # --------------------------------------------------------
-
-    ml_intent = intent_result.get(
-        "ml_intent",
-        final_intent
-    )
-
-    ml_confidence = float(
-        intent_result.get(
-            "ml_confidence",
-            0.0
-        )
-    )
-
-    # --------------------------------------------------------
-    # Domain-rule classification
-    # --------------------------------------------------------
-
-    domain_intent = intent_result.get(
-        "domain_intent",
-        None
-    )
-
-    domain_score = float(
-        intent_result.get(
-            "domain_score",
-            0.0
-        )
-    )
-
-    source = intent_result.get(
-        "source",
-        "ML"
+        _INTENT_CLASSIFIER
     )
 
     # ========================================================
-    # 2. CONFIDENCE ANALYSIS
+    # STEP 2: CONFIDENCE ANALYSIS
     # ========================================================
 
-    confidence_analysis = analyze_confidence(
-        {
-            "intent": final_intent,
-            "confidence": final_confidence,
-        }
+    intent_analysis = analyze_confidence(
+        intent_result
     )
 
+    intent = intent_analysis["intent"]
+
+    confidence = intent_analysis["confidence"]
+
     # ========================================================
-    # 3. RETRIEVE SIMILAR HISTORICAL CASES
+    # STEP 3: RAG RETRIEVAL
     # ========================================================
 
     retrieved_cases = _RETRIEVER.retrieve(
         query=customer_message,
         top_k=top_k,
-        min_score=0.30,
+        min_score=0.30
     )
 
     # ========================================================
-    # 4. GENERATE SUPPORT REPLY
-    # ========================================================
-
-    reply = generate_support_reply(
-        customer_message=customer_message,
-        intent=final_intent,
-        retrieved_cases=retrieved_cases,
-    )
-
-    # ========================================================
-    # 5. ESCALATION ANALYSIS
-    # ========================================================
-
-    escalation = detect_escalation(
-        customer_message=customer_message,
-        intent=final_intent,
-        confidence=final_confidence,
-    )
-
-    # ========================================================
-    # 6. FINAL DECISION
+    # STEP 4: RESPONSE GENERATION
     # ========================================================
     #
     # IMPORTANT:
-    # make_decision() accepts the escalation result directly.
+    # generate_support_reply() expects positional arguments
+    # in the current project.
     #
+    # Therefore we intentionally use:
+    #
+    # generate_support_reply(
+    #     customer_message,
+    #     intent,
+    #     retrieved_cases
+    # )
+    #
+    # ========================================================
 
-    decision = make_decision(
-        escalation
+    generated_reply = generate_support_reply(
+        customer_message,
+        intent,
+        retrieved_cases
     )
 
     # ========================================================
-    # 7. RETURN COMPLETE PIPELINE RESULT
+    # STEP 5: ESCALATION DETECTION
+    # ========================================================
+
+    escalation_result = detect_escalation(
+        customer_message=customer_message,
+        intent=intent,
+        confidence=confidence
+    )
+
+    # ========================================================
+    # STEP 6: FINAL DECISION
+    # ========================================================
+
+    final_decision = make_decision(
+        escalation_result
+    )
+
+    # ========================================================
+    # RESULT
     # ========================================================
 
     return {
-
-        # ----------------------------------------------------
-        # Customer input
-        # ----------------------------------------------------
-
         "customer_message": customer_message,
 
-        # ----------------------------------------------------
-        # Final hybrid intent
-        # ----------------------------------------------------
+        "intent": intent,
 
-        "intent": final_intent,
+        "confidence": confidence,
 
-        "confidence": confidence_analysis,
+        "confidence_level": intent_analysis["level"],
 
-        # ----------------------------------------------------
-        # Raw ML result
-        # ----------------------------------------------------
-
-        "ml_intent": ml_intent,
-
-        "ml_confidence": ml_confidence,
+        "should_escalate": intent_analysis[
+            "should_escalate"
+        ],
 
         # ----------------------------------------------------
-        # Domain rule result
+        # ML INFORMATION
         # ----------------------------------------------------
 
-        "domain_intent": domain_intent,
+        "ml_intent": intent_result.get(
+            "ml_intent",
+            intent
+        ),
 
-        "domain_score": domain_score,
-
-        "source": source,
+        "ml_confidence": intent_result.get(
+            "ml_confidence",
+            intent_result.get(
+                "confidence",
+                confidence
+            )
+        ),
 
         # ----------------------------------------------------
-        # Retrieved historical cases
+        # DOMAIN INFORMATION
+        # ----------------------------------------------------
+
+        "domain_intent": intent_result.get(
+            "domain_intent",
+            intent
+        ),
+
+        "domain_score": intent_result.get(
+            "domain_score",
+            0.0
+        ),
+
+        "classification_source": intent_result.get(
+            "classification_source",
+            "HYBRID"
+        ),
+
+        # ----------------------------------------------------
+        # RAG
         # ----------------------------------------------------
 
         "retrieved_cases": retrieved_cases,
 
         # ----------------------------------------------------
-        # Generated response
+        # RESPONSE
         # ----------------------------------------------------
 
-        "reply": reply,
+        "generated_reply": generated_reply,
+
+        # Compatibility with evaluation modules
+        "reply": generated_reply,
 
         # ----------------------------------------------------
-        # Escalation analysis
+        # ESCALATION
         # ----------------------------------------------------
 
-        "escalation": escalation,
+        "escalation": escalation_result,
 
         # ----------------------------------------------------
-        # Final decision
+        # FINAL DECISION
         # ----------------------------------------------------
 
-        "decision": decision,
+        "final_decision": final_decision
     }
 
 
 # ============================================================
-# OPTIONAL DIRECT TEST
+# BACKWARD COMPATIBILITY
+# ============================================================
+
+def run_pipeline(customer_message, top_k=3):
+    """
+    Backward-compatible wrapper used by evaluation modules.
+    """
+
+    return run_support_agent(
+        customer_message=customer_message,
+        top_k=top_k
+    )
+
+
+# ============================================================
+# RAG DOCUMENT TEXT HELPER
+# ============================================================
+
+def get_case_text(case):
+    """
+    Extract historical conversation text from a
+    VectorStore retrieval result.
+
+    Current VectorStore structure:
+
+        {
+            "document": {
+                "conversation_id": "...",
+                "text": "..."
+            },
+            "score": 0.81
+        }
+    """
+
+    if not isinstance(case, dict):
+        return ""
+
+    # --------------------------------------------------------
+    # Current VectorStore format
+    # --------------------------------------------------------
+
+    document = case.get(
+        "document"
+    )
+
+    if isinstance(document, dict):
+
+        text = document.get(
+            "text",
+            ""
+        )
+
+        if isinstance(text, str):
+            return text
+
+    # --------------------------------------------------------
+    # Fallback formats
+    # --------------------------------------------------------
+
+    text = case.get(
+        "text",
+        ""
+    )
+
+    if isinstance(text, str) and text:
+        return text
+
+    customer_text = case.get(
+        "customer_message",
+        ""
+    )
+
+    brand_response = case.get(
+        "brand_response",
+        ""
+    )
+
+    parts = []
+
+    if customer_text:
+        parts.append(
+            f"Customer: {customer_text}"
+        )
+
+    if brand_response:
+        parts.append(
+            f"Comcast: {brand_response}"
+        )
+
+    return "\n".join(parts)
+
+
+# ============================================================
+# DISPLAY RESULT
+# ============================================================
+
+def display_result(result):
+    """
+    Display the complete support-agent result.
+    """
+
+    print("\n")
+    print("=" * 70)
+    print("CUSTOMER SUPPORT AGENT RESULT")
+    print("=" * 70)
+
+    # ========================================================
+    # CUSTOMER MESSAGE
+    # ========================================================
+
+    print("\nCustomer Message:")
+    print(
+        result["customer_message"]
+    )
+
+    # ========================================================
+    # FINAL INTENT
+    # ========================================================
+
+    print("\nIntent:")
+    print(
+        result["intent"]
+    )
+
+    print("\nConfidence:")
+    print(
+        f"{result['confidence']:.2f}"
+    )
+
+    print("\nConfidence Level:")
+    print(
+        result["confidence_level"]
+    )
+
+    # ========================================================
+    # ML DETAILS
+    # ========================================================
+
+    print("\nML Intent:")
+    print(
+        result["ml_intent"]
+    )
+
+    print("\nML Confidence:")
+
+    ml_confidence = result[
+        "ml_confidence"
+    ]
+
+    if isinstance(
+        ml_confidence,
+        (int, float)
+    ):
+        print(
+            f"{ml_confidence:.4f}"
+        )
+    else:
+        print(
+            ml_confidence
+        )
+
+    # ========================================================
+    # DOMAIN DETAILS
+    # ========================================================
+
+    print("\nDomain Intent:")
+    print(
+        result["domain_intent"]
+    )
+
+    print("\nDomain Score:")
+    print(
+        result["domain_score"]
+    )
+
+    print("\nClassification Source:")
+    print(
+        result["classification_source"]
+    )
+
+    # ========================================================
+    # RAG RESULTS
+    # ========================================================
+
+    print("\nRetrieved Cases:")
+    print(
+        len(result["retrieved_cases"])
+    )
+
+    if not result["retrieved_cases"]:
+
+        print(
+            "No sufficiently similar historical cases found."
+        )
+
+    else:
+
+        for i, case in enumerate(
+            result["retrieved_cases"],
+            start=1
+        ):
+
+            print("\n" + "-" * 70)
+
+            score = case.get(
+                "score",
+                0.0
+            )
+
+            print(
+                f"Case {i} "
+                f"(similarity score={score:.4f})"
+            )
+
+            print("-" * 70)
+
+            # ------------------------------------------------
+            # Extract actual document
+            # ------------------------------------------------
+
+            case_text = get_case_text(
+                case
+            )
+
+            if case_text:
+
+                print(
+                    case_text
+                )
+
+            else:
+
+                print(
+                    "Historical conversation text unavailable."
+                )
+
+    # ========================================================
+    # GENERATED RESPONSE
+    # ========================================================
+
+    print("\n")
+    print("=" * 70)
+    print("GENERATED RESPONSE")
+    print("=" * 70)
+
+    print(
+        result["generated_reply"]
+    )
+
+    # ========================================================
+    # ESCALATION RESULT
+    # ========================================================
+
+    print("\n")
+    print("=" * 70)
+    print("ESCALATION RESULT")
+    print("=" * 70)
+
+    print(
+        result["escalation"]
+    )
+
+    # ========================================================
+    # FINAL DECISION
+    # ========================================================
+
+    print("\n")
+    print("=" * 70)
+    print("FINAL DECISION")
+    print("=" * 70)
+
+    print(
+        result["final_decision"]
+    )
+
+    print("\n")
+    print("=" * 70)
+
+
+# ============================================================
+# DEMO
 # ============================================================
 
 if __name__ == "__main__":
 
     test_message = (
-        "My internet has been completely down "
-        "for the last two hours. Please help."
+        "Why is my Comcast bill so high this month?"
     )
 
-    print("\n" + "=" * 70)
-    print("PIPELINE TEST")
-    print("=" * 70)
-
-    result = run_pipeline(
-        test_message,
+    result = run_support_agent(
+        customer_message=test_message,
         top_k=3
     )
 
-    print("\nCustomer:")
-    print(result["customer_message"])
-
-    print("\nFinal Intent:")
-    print(result["intent"])
-
-    print(
-        "\nFinal Confidence:",
-        result["confidence"]
+    display_result(
+        result
     )
-
-    print(
-        "\nML Intent:",
-        result["ml_intent"]
-    )
-
-    print(
-        "ML Confidence:",
-        result["ml_confidence"]
-    )
-
-    print(
-        "\nDomain Intent:",
-        result["domain_intent"]
-    )
-
-    print(
-        "Domain Score:",
-        result["domain_score"]
-    )
-
-    print(
-        "Decision Source:",
-        result["source"]
-    )
-
-    print(
-        "\nRetrieved Cases:",
-        len(result["retrieved_cases"])
-    )
-
-    print("\nReply:")
-    print(result["reply"])
-
-    print("\nEscalation:")
-    print(result["escalation"])
-
-    print("\nFinal Decision:")
-    print(result["decision"])
-
-    print("\n" + "=" * 70)
-    print("PIPELINE TEST COMPLETED")
-    print("=" * 70)

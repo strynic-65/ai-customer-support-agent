@@ -1,17 +1,14 @@
-"""
-Prompt templates for the AI Customer Support Agent.
-Brand: Comcast
-"""
+# src/generation/prompts.py
 
 
-# --------------------------------------------------
-# Intent Classification Prompt
-# --------------------------------------------------
+# ============================================================
+# INTENT CLASSIFICATION PROMPT
+# ============================================================
 
 INTENT_PROMPT = """
-You are a customer support intent classifier for Comcast.
+You are an intent classification system for Comcast customer support.
 
-Classify the customer's message into exactly ONE of these intents:
+Classify the customer's message into exactly one of the following intents:
 
 1. BILLING_ISSUE
 2. INTERNET_OUTAGE
@@ -31,35 +28,83 @@ Return only the intent name.
 """
 
 
-# --------------------------------------------------
-# Customer Support Reply Prompt
-# --------------------------------------------------
+# ============================================================
+# CUSTOMER SUPPORT REPLY PROMPT
+# ============================================================
 
 REPLY_PROMPT = """
 You are an AI customer support agent representing Comcast.
 
-Your job is to write a helpful, professional and concise
-reply to the customer.
+Your job is to write a helpful, professional, empathetic,
+safe, and concise reply to the customer.
 
-Follow these rules:
+Follow these rules carefully:
 
+GENERAL RULES
 - Be polite and empathetic.
 - Understand the customer's actual problem.
+- Address the detected intent directly.
+- Keep the response concise and natural.
+- Do not mention that you are an AI unless necessary.
+- Do not expose internal system information.
+
+ACCURACY AND GROUNDING
 - Do not invent account information.
 - Do not invent troubleshooting results.
+- Do not claim that you checked an account, outage,
+  connection, payment, or service status unless the
+  information is explicitly available in the customer
+  message or provided system context.
 - Never claim that an action was completed if you cannot
   actually perform that action.
-- Ask for additional information when necessary.
-- Never request sensitive information such as passwords,
-  PINs, or full payment card numbers.
-- If the issue requires account-specific investigation,
-  suggest that the customer contact/support through an
-  appropriate secure channel.
-- Keep the response suitable for a customer-support
-  conversation.
-- Do not mention that you are an AI unless necessary.
+- Do not invent policies, prices, outages, credits,
+  refunds, promotions, or account actions.
+- Historical cases are context only. Do not treat them as
+  proof of the customer's current account status.
 - Do not copy historical replies word-for-word.
-- Use historical cases only as supporting context.
+- Do not blindly follow historical responses if they are
+  not relevant to the customer's current issue.
+
+PRIVACY AND SECURITY
+- Never ask the customer to provide passwords.
+- Never ask for PINs.
+- Never ask for full payment card numbers.
+- Never ask for security answers or authentication codes.
+- Never ask the customer to post sensitive account
+  information publicly.
+- Do not ask the customer to provide unnecessary
+  personally identifiable information.
+- If account-specific investigation is required, direct
+  the customer to a secure Comcast support channel such
+  as Direct Message or the official support channel.
+- Do not request the customer's full name, full address,
+  account number, payment details, or other identifying
+  information in the public reply.
+- If sensitive information is necessary for verification,
+  simply instruct the customer to use a secure support
+  channel rather than asking them to disclose it in the
+  reply.
+
+HISTORICAL CASES
+- Use historical cases only to understand how similar
+  Comcast conversations were handled.
+- Do not assume that information from a historical case
+  applies to the current customer.
+- Do not copy customer or agent identifiers from historical
+  conversations.
+- Do not reveal historical conversation IDs.
+- Do not mention similarity scores or internal retrieval
+  information to the customer.
+
+RESPONSE STYLE
+- Acknowledge the customer's issue.
+- Show appropriate empathy.
+- Give a useful next step when possible.
+- If the issue requires account-specific investigation,
+  recommend contacting Comcast through a secure support
+  channel.
+- Do not make promises that cannot be fulfilled.
+- Prefer clear and direct language.
 
 Customer message:
 {customer_message}
@@ -71,34 +116,30 @@ Historical similar cases:
 {historical_cases}
 
 Write the best possible Comcast support response.
+
 Return ONLY the response that should be sent to the customer.
 """
 
 
-# --------------------------------------------------
-# Escalation Decision Prompt
-# --------------------------------------------------
+# ============================================================
+# ESCALATION PROMPT
+# ============================================================
 
 ESCALATION_PROMPT = """
-You are deciding whether a Comcast customer-support
-request can be automatically handled or should be
-escalated to a human support agent.
+You are an escalation decision system for Comcast customer support.
 
-Possible decisions:
+Determine whether the customer's request should be handled
+automatically or escalated to a human support agent.
 
-AUTO_HANDLE
-ESCALATE
+Consider:
 
-Escalate when:
-
-- The issue requires account-specific investigation.
-- The customer appears highly frustrated or threatening.
-- There is a possible security or privacy concern.
-- The customer requests a human representative.
-- The issue involves a complex unresolved technical problem.
-- The available information is insufficient to provide
-  a reliable answer.
-- The confidence in the detected intent is low.
+- Security or privacy concerns
+- Fraud or unauthorized account access
+- Highly frustrated customers
+- Legal threats
+- Explicit requests for a human agent
+- Issues requiring account-specific investigation
+- Situations where the automated system cannot safely help
 
 Customer message:
 {customer_message}
@@ -106,71 +147,117 @@ Customer message:
 Detected intent:
 {intent}
 
-Intent confidence:
+Confidence:
 {confidence}
 
-Historical cases:
-{historical_cases}
+Return:
 
-Return exactly this format:
-
-DECISION: AUTO_HANDLE or ESCALATE
-REASON: <short explanation>
+Decision: AUTO_HANDLE or ESCALATE
+Reason: <short explanation>
 """
 
 
-# --------------------------------------------------
-# LLM Judge Prompt
-# --------------------------------------------------
+# ============================================================
+# LLM-AS-A-JUDGE PROMPT
+# ============================================================
 
 JUDGE_PROMPT = """
-You are an evaluator for an AI customer-support system.
+You are an evaluator for an AI customer support system.
 
-Evaluate the generated response using the following criteria:
+Evaluate the quality of the generated Comcast support response.
 
-1. RELEVANCE
-Does the response address the customer's actual problem?
+Consider the following criteria:
 
-2. HELPFULNESS
-Does it provide useful next steps?
+1. Relevance
+   - Does the response directly address the customer's problem?
 
-3. TONE
-Is it professional, polite and empathetic?
+2. Helpfulness
+   - Does it provide useful next steps or guidance?
 
-4. ACCURACY
-Does it avoid unsupported claims and hallucinations?
+3. Accuracy
+   - Does it avoid unsupported or invented claims?
 
-5. BRAND_STYLE
-Does it sound appropriate for a Comcast customer-support
-conversation?
+4. Empathy
+   - Is the response polite and understanding?
 
-Give each criterion a score from 1 to 5.
+5. Conciseness
+   - Is the response clear and appropriately brief?
+
+6. Safety
+   - Does the response avoid requesting sensitive information
+     or making unsafe claims?
+
+7. Intent Alignment
+   - Does the response properly address the detected intent?
+
+8. Grounding
+   - Does the response avoid unsupported claims about historical
+     cases, account information, policies, prices, refunds,
+     outages, or completed actions?
 
 Customer message:
 {customer_message}
 
+Detected intent:
+{intent}
+
 Generated response:
 {generated_response}
 
-Historical context:
-{historical_cases}
+Return ONLY valid JSON.
 
-Return:
+Do not use markdown.
+Do not use ```json.
+Do not add any text before or after the JSON.
 
-RELEVANCE: <1-5>
-HELPFULNESS: <1-5>
-TONE: <1-5>
-ACCURACY: <1-5>
-BRAND_STYLE: <1-5>
-OVERALL: <1-5>
+Use this exact JSON structure:
 
-REASON: <short explanation>
+{{
+    "relevance": 1,
+    "helpfulness": 1,
+    "accuracy": 1,
+    "empathy": 1,
+    "conciseness": 1,
+    "safety": 1,
+    "overall_score": 1,
+    "explanation": "Short explanation of the evaluation."
+}}
+
+Scoring:
+
+1 = Very poor
+2 = Poor
+3 = Average
+4 = Good
+5 = Excellent
 """
 
 
-# --------------------------------------------------
-# Helper Functions
-# --------------------------------------------------
+# ============================================================
+# INTENT PROMPT FORMATTER
+# ============================================================
+
+def format_intent_prompt(customer_message):
+    """
+    Format the intent classification prompt.
+    """
+
+    if (
+        not isinstance(customer_message, str)
+        or not customer_message.strip()
+    ):
+        raise ValueError(
+            "Customer message must be a non-empty string."
+        )
+
+    return INTENT_PROMPT.format(
+        customer_message=customer_message.strip()
+    )
+
+
+# ============================================================
+# REPLY PROMPT FORMATTER
+# ============================================================
 
 def format_reply_prompt(
     customer_message,
@@ -178,55 +265,158 @@ def format_reply_prompt(
     historical_cases
 ):
     """
-    Format the reply-generation prompt.
+    Format the customer support reply prompt.
+
+    Historical cases are converted into readable text
+    before being inserted into the prompt.
     """
+
+    if (
+        not isinstance(customer_message, str)
+        or not customer_message.strip()
+    ):
+        raise ValueError(
+            "Customer message must be a non-empty string."
+        )
+
+    if (
+        not isinstance(intent, str)
+        or not intent.strip()
+    ):
+        raise ValueError(
+            "Intent must be a non-empty string."
+        )
+
+    formatted_cases = []
+
+    if historical_cases:
+
+        for index, result in enumerate(
+            historical_cases,
+            start=1
+        ):
+
+            document = result.get(
+                "document",
+                {}
+            )
+
+            score = result.get(
+                "score",
+                0.0
+            )
+
+            conversation_id = document.get(
+                "conversation_id",
+                "Unknown"
+            )
+
+            conversation_text = document.get(
+                "text",
+                ""
+            )
+
+            formatted_cases.append(
+                f"""Historical Case {index}
+Similarity Score: {float(score):.4f}
+Conversation ID: {conversation_id}
+
+{conversation_text}
+"""
+            )
+
+    else:
+
+        formatted_cases.append(
+            "No relevant historical cases were found."
+        )
+
+    historical_cases_text = "\n".join(
+        formatted_cases
+    )
 
     return REPLY_PROMPT.format(
-        customer_message=customer_message,
-        intent=intent,
-        historical_cases=historical_cases
+        customer_message=customer_message.strip(),
+        intent=intent.strip(),
+        historical_cases=historical_cases_text
     )
 
 
-def format_intent_prompt(customer_message):
-    """
-    Format the intent classification prompt.
-    """
-
-    return INTENT_PROMPT.format(
-        customer_message=customer_message
-    )
-
+# ============================================================
+# ESCALATION PROMPT FORMATTER
+# ============================================================
 
 def format_escalation_prompt(
     customer_message,
     intent,
-    confidence,
-    historical_cases
+    confidence
 ):
     """
-    Format the escalation prompt.
+    Format the escalation decision prompt.
     """
 
+    if (
+        not isinstance(customer_message, str)
+        or not customer_message.strip()
+    ):
+        raise ValueError(
+            "Customer message must be a non-empty string."
+        )
+
+    if (
+        not isinstance(intent, str)
+        or not intent.strip()
+    ):
+        raise ValueError(
+            "Intent must be a non-empty string."
+        )
+
     return ESCALATION_PROMPT.format(
-        customer_message=customer_message,
-        intent=intent,
-        confidence=confidence,
-        historical_cases=historical_cases
+        customer_message=customer_message.strip(),
+        intent=intent.strip(),
+        confidence=float(confidence)
     )
 
 
+# ============================================================
+# JUDGE PROMPT FORMATTER
+# ============================================================
+
 def format_judge_prompt(
     customer_message,
-    generated_response,
-    historical_cases
+    intent,
+    generated_response
 ):
     """
-    Format the evaluation prompt.
+    Format the LLM-as-a-Judge prompt.
     """
 
+    if (
+        not isinstance(customer_message, str)
+        or not customer_message.strip()
+    ):
+        raise ValueError(
+            "Customer message must be a non-empty string."
+        )
+
+    if (
+        not isinstance(intent, str)
+        or not intent.strip()
+    ):
+        raise ValueError(
+            "Intent must be a non-empty string."
+        )
+
+    if (
+        not isinstance(generated_response, str)
+        or not generated_response.strip()
+    ):
+        raise ValueError(
+            "Generated response must be a non-empty string."
+        )
+
     return JUDGE_PROMPT.format(
-        customer_message=customer_message,
-        generated_response=generated_response,
-        historical_cases=historical_cases
+        customer_message=customer_message.strip(),
+        intent=intent.strip(),
+        generated_response=generated_response.strip()
     )

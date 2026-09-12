@@ -1,3 +1,5 @@
+# src/intent/ml_classifier.py
+
 import pandas as pd
 import numpy as np
 
@@ -47,15 +49,15 @@ def normalize_text(text):
 
 
 # ============================================================
-# ML PIPELINE
+# MODEL BUILDERS
 # ============================================================
 
-def create_pipeline():
+def build_vectorizer():
     """
-    Create TF-IDF + Logistic Regression pipeline.
+    Build the TF-IDF vectorizer used by the intent classifier.
     """
 
-    vectorizer = TfidfVectorizer(
+    return TfidfVectorizer(
         lowercase=True,
         strip_accents="unicode",
         ngram_range=(1, 3),
@@ -65,13 +67,33 @@ def create_pipeline():
         max_features=100000,
     )
 
-    classifier = LogisticRegression(
+
+def build_classifier():
+    """
+    Build the Logistic Regression classifier used by
+    the intent classifier.
+    """
+
+    return LogisticRegression(
         max_iter=3000,
         class_weight="balanced",
         C=2.0,
         solver="lbfgs",
         random_state=42,
     )
+
+
+# ============================================================
+# ML PIPELINE
+# ============================================================
+
+def create_pipeline():
+    """
+    Create TF-IDF + Logistic Regression pipeline.
+    """
+
+    vectorizer = build_vectorizer()
+    classifier = build_classifier()
 
     return Pipeline([
         ("tfidf", vectorizer),
@@ -398,7 +420,9 @@ def train_final_model(df=None):
         .str.strip()
     )
 
+    # --------------------------------------------------------
     # Remove empty messages
+    # --------------------------------------------------------
 
     df = df[
         df["customer_message"] != ""
@@ -422,27 +446,13 @@ def train_final_model(df=None):
     # TF-IDF
     # ========================================================
 
-    vectorizer = TfidfVectorizer(
-        lowercase=True,
-        strip_accents="unicode",
-        ngram_range=(1, 3),
-        min_df=1,
-        max_df=0.95,
-        sublinear_tf=True,
-        max_features=100000,
-    )
+    vectorizer = build_vectorizer()
 
     # ========================================================
     # Logistic Regression
     # ========================================================
 
-    classifier = LogisticRegression(
-        max_iter=3000,
-        class_weight="balanced",
-        C=2.0,
-        solver="lbfgs",
-        random_state=42,
-    )
+    classifier = build_classifier()
 
     # ========================================================
     # Train
